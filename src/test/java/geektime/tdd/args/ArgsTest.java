@@ -1,9 +1,10 @@
 package geektime.tdd.args;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ArgsTest {
@@ -25,7 +26,23 @@ public class ArgsTest {
     // {-l:[], -p:[8080], -d:[/usr/logs] }
 
     // Single Options:
-    // TODO:     - Bool -l
+    @Test
+    public void should_set_boolean_option_to_true_if_flag_present() {
+        BooleanOption option = Args.parse(BooleanOption.class, "-l");
+
+        assertTrue(option.logging());
+    }
+
+    @Test
+    public void should_set_boolean_option_to_false_if_flag_not_present() {
+        BooleanOption option = Args.parse(BooleanOption.class);
+
+        assertFalse(option.logging());
+    }
+
+    static record BooleanOption(@Option("l") boolean logging) {
+    }
+
     // TODO:     - Integer -p 8080
     // TODO:     - String -d /usr/logs
     // TODO: multi options: -l -p 8080 -d /usr/logs
@@ -39,6 +56,7 @@ public class ArgsTest {
     // - string : ""
 
     @Test
+    @Disabled()
     public void should_example_1() {
         Options options = Args.parse(Options.class, "-l", "-p", "8080", "-d", "/usr/logs");
         assertTrue(options.logging());
@@ -48,6 +66,7 @@ public class ArgsTest {
 
     // -g this is a list -d 1 2 -3 5
     @Test
+    @Disabled
     public void should_example_2() {
         ListOptions options = Args.parse(ListOptions.class, "-g", "this", "is", "a", "list", "-d", "1", "2", "-3", "5");
         assertEquals(new String[]{"this", "is", "a", "list"}, options.group());
