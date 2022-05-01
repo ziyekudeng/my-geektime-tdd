@@ -1,6 +1,10 @@
 package geektime.tdd.args;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ArgsTest {
     // 策略一：正则切割，比较复杂
@@ -21,18 +25,24 @@ public class ArgsTest {
     // {-l:[], -p:[8080], -d:[/usr/logs] }
 
     @Test
-    public void should() {
-        // 写法一
-        Arguments args = Args.parse("l:b,p:b,d:s", "-l", "-p", "8080", "-d", "/usr/logs");
-        args.getBool("l");
-        args.getInt("p");
-
-        // 写法二 （徐昊推荐这种）
+    public void should_example_1() {
         Options options = Args.parse(Options.class, "-l", "-p", "8080", "-d", "/usr/logs");
-        options.logging();
-        options.port();
+        assertTrue(options.logging());
+        assertEquals(8080, options.port());
+        assertEquals("/usr/logs", options.directory());
+    }
+
+    // -g this is a list -d 1 2 -3 5
+    @Test
+    public void should_example_2() {
+        ListOptions options = Args.parse(ListOptions.class, "-g", "this", "is", "a", "list", "-d", "1", "2", "-3", "5");
+        assertEquals(new String[]{"this", "is", "a", "list"}, options.group());
+        assertEquals(new int[]{1, 2, -3, 5}, options.decimals());
     }
 
     static record Options(@Option("l") boolean logging, @Option("p") int port, @Option("d") String directory) {
+    }
+
+    static record ListOptions(@Option("g") String[] group, @Option("d") int[] decimals) {
     }
 }
