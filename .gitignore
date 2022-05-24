@@ -24,7 +24,7 @@ hs_err_pid*
 
 .gradle
 .idea
-
+target/
 */gradle/
 */build/
 */.gradle/

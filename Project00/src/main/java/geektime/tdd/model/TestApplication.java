@@ -6,6 +6,9 @@ import javax.persistence.Persistence;
 import java.util.Optional;
 
 public class TestApplication {
+    /*
+     * 执行完成后删除项目下的 Project00/target
+     */
     public static void main(String[] args) {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("student");
         EntityManager entityManager = factory.createEntityManager();
