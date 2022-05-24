@@ -25,6 +25,7 @@
 * 使用 JDK 17
 * 使用 gradle 7.3
 * 使用 Java内置数据库 hsqldb
+* 使用 测试框架 Junit5
 
 ### 测试的基本结构
 
